@@ -12,40 +12,46 @@ app.controller('myCtrl',function($scope){
 	$scope.complete = [];
 
 	$scope.add = function () {
-	    $scope.list.push({text:$scope.form, done:false});
+	    $scope.list.push({text:$scope.form,done:false});
 	    $scope.form = '';
 	  };
-	  $scope.checked = function () {
-		    $scope.complete.push({text:$scope.form, done:true});
-		    $scope.form = '';
-		  };
+	  
+	$scope.tasks=function(a){
+		if(a=='all'){
+			$scope.sort={};
+		}
+		if(a=='pending') {
+			$scope.sort={done:false};
+		}
+		if (a=='completed'){
+			$scope.sort={done:true};
+		}
+	};
+	
 });
 </script>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
 <div id="container">
+	<h1>To Do List</h1>
 
 <div id="head">
 	<h3>To Do List</h3>
 	<label>Enter the task</label>
 	<input type="text" id="enterInput" ng-model="form" >
 	<button ng-click="add()">Add</button>
-
 </div>
 
-<div id="pending">
-	<h3>Pending Tasks</h3>
+<a href="#" ng-click="tasks('all')">All Tasks</a>
+<a href="#" ng-click="tasks('pending')">Pending</a>
+<a href="#" ng-click="tasks('completed')">Completed</a>
+<div id="allTasks">
 	<ul>
-	<li ng-repeat="x in list"><input type="checkbox" ng-model="x.done"  ng-click="checked()"><span class="done-{{x.done}}">{{x.text}}</span></li>
+	<li ng-repeat="x in list|filter:sort"><input type="checkbox" ng-model="x.done" ><span class="done-{{x.done}}">{{x.text}}</span></li>
 	</ul>
 </div>
 
-<div id="completed">
-	<h3>Completed Tasks</h3>
-	<ul>
-	<li ng-repeat="y in complete"><input type="checkbox" ng-model="y.done" ><span class="done-{{y.done}}" >{{y.text}}</span></li>
-	</ul>
-</div>
+
 
 
 
